@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class animationevents : MonoBehaviour
 {
-     weapnvisualcontroller weapnvisualcontroller;
+    weapnvisualcontroller weapnvisualcontroller;
     private void Start()
     {
         weapnvisualcontroller = GetComponentInParent<weapnvisualcontroller>();
@@ -11,5 +11,15 @@ public class animationevents : MonoBehaviour
     {
         weapnvisualcontroller.callriganimation();
 
+    }
+    public void rigisover()
+    {
+        weapnvisualcontroller.callriganimation();
+        weapnvisualcontroller.calllefthandanimation();
+    }
+    public void weapongrabisover()
+    {
+
+        weapnvisualcontroller.setweapobusy(false);
     }
 }

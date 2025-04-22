@@ -4,12 +4,18 @@ using UnityEngine.InputSystem;
 public class weapnvisualcontroller : MonoBehaviour
 {
     [SerializeField] Transform[] weapons;
+    [Header("Left Hand")]
+    [SerializeField] TwoBoneIKConstraint lefthandconstraint;
+    [SerializeField] private float incresetime = 0.25f;
+    [SerializeField] private float incresetimelefthand = 0.25f;
     [SerializeField] Transform lefthand;
     private Animator anim;
     private Transform currentgun;
     Rig rig;
     private bool rigshouldbeincreased;
-    [SerializeField]private float incresetime = 0.25f;
+    private bool lefthandshouldbeincreased;
+    private bool weponisbusy;
+    
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
@@ -20,11 +26,10 @@ public class weapnvisualcontroller : MonoBehaviour
     private void Update()
     {
         applyinputswitch();
-        if (UnityEngine.Input.GetKeyDown(KeyCode.R))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.R) &&  weponisbusy==false)
         {
             anim.SetTrigger("reload");
-            rig.weight = 0;
-
+            pauserig();
 
         }
         if (rigshouldbeincreased)
@@ -35,9 +40,38 @@ public class weapnvisualcontroller : MonoBehaviour
                 rigshouldbeincreased = false;
             }
         }
+        if (lefthandshouldbeincreased)
+        {
+            lefthandconstraint.weight += incresetimelefthand * Time.deltaTime;
+            if (lefthandconstraint.weight >= 1)
+            {
+                lefthandshouldbeincreased = false;
+            }
+        }
 
     }
+
+    private void pauserig()
+    {
+        rig.weight = 0;
+    }
+
+    private void weaponGrab(GrabType type)
+    {
+        pauserig();
+        lefthandconstraint.weight = 0;
+        anim.SetFloat("weaponGrab", (float)type);
+        anim.SetTrigger("Grab");
+        setweapobusy(true);
+        
+    }
+    public  void setweapobusy(bool busy)
+    {
+        weponisbusy = busy;
+        anim.SetBool("weaponisbusy", busy);
+    }
     public void callriganimation() => rigshouldbeincreased = true;
+    public void calllefthandanimation() => lefthandshouldbeincreased = true;
 
     private void applyinputswitch()
     {
@@ -45,26 +79,31 @@ public class weapnvisualcontroller : MonoBehaviour
         {
             switchonguns(weapons[0]);
             switchanimations(1);
+            weaponGrab(GrabType.sideGrab);
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha2))
         {
             switchonguns(weapons[1]);
             switchanimations(1);
+            weaponGrab(GrabType.sideGrab);
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha3))
         {
             switchonguns(weapons[2]);
             switchanimations(1);
+            weaponGrab(GrabType.BackGrab);
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha4))
         {
             switchonguns(weapons[3]);
             switchanimations(2);
+            weaponGrab(GrabType.BackGrab);
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha5))
         {
             switchonguns(weapons[4]);
             switchanimations(3);
+            weaponGrab(GrabType.BackGrab);
         }
     }
 
@@ -92,10 +131,12 @@ public class weapnvisualcontroller : MonoBehaviour
     }
     private void switchanimations(int layerindex)
     {
-        for ( int i=1; i<anim.layerCount; i++)
+        for (int i = 1; i < anim.layerCount; i++)
         {
-           anim.SetLayerWeight(i, 0);
+            anim.SetLayerWeight(i, 0);
         }
         anim.SetLayerWeight(layerindex, 1);
     }
+
+    public enum GrabType { sideGrab, BackGrab };
 }
