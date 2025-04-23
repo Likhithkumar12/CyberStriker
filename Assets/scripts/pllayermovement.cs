@@ -64,7 +64,7 @@ public class Pllayermovement : MonoBehaviour
         controller.Move(movedirection * Time.deltaTime * speed);
 
     }
-    void applyrotation()
+    private void applyrotation()
     {
         Vector3 lookindirection = player.playeraimm.applyaim().point - transform.position;
         lookindirection.y = 0f;

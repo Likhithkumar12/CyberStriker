@@ -14,10 +14,11 @@ public class weapnvisualcontroller : MonoBehaviour
     Rig rig;
     private bool rigshouldbeincreased;
     private bool lefthandshouldbeincreased;
-    private bool weponisbusy;
+    public  bool weponisbusy;
     
     private void Start()
     {
+        weponisbusy = false;
         anim = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
         switchonguns(weapons[0]);
@@ -61,14 +62,15 @@ public class weapnvisualcontroller : MonoBehaviour
         pauserig();
         lefthandconstraint.weight = 0;
         anim.SetFloat("weaponGrab", (float)type);
-        anim.SetTrigger("Grab");
         setweapobusy(true);
+        anim.SetTrigger("Grab");
+      
         
     }
     public  void setweapobusy(bool busy)
     {
         weponisbusy = busy;
-        anim.SetBool("weaponisbusy", busy);
+        anim.SetBool("weaponisbusy",weponisbusy);
     }
     public void callriganimation() => rigshouldbeincreased = true;
     public void calllefthandanimation() => lefthandshouldbeincreased = true;
