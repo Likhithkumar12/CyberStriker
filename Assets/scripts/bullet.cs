@@ -5,6 +5,7 @@ public class bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        GetComponent<Rigidbody>().constraints= RigidbodyConstraints.FreezeAll;
+        // GetComponent<Rigidbody>().constraints= RigidbodyConstraints.FreezeAll;
+        Destroy(gameObject);
             }
 }

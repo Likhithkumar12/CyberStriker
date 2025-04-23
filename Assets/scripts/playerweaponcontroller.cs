@@ -1,4 +1,5 @@
 
+using System.Runtime.CompilerServices;
 using UnityEditor.Rendering.LookDev;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class playerweaponcontroller : MonoBehaviour
     [SerializeField] Transform Aimm;
     [SerializeField] float bulletSpeed = 20f;
     weapnvisualcontroller weapnvisualcontroller;
+    private const float REFERENCE_BULLET_SPEED = 20f;
     playeraim playeraimm;
 
     private void Start()
@@ -27,7 +29,9 @@ public class playerweaponcontroller : MonoBehaviour
     private void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, gunpoint.position, Quaternion.LookRotation(BulletDirection()));
-        bullet.GetComponent<Rigidbody>().linearVelocity = BulletDirection() * bulletSpeed; 
+        Rigidbody newbulletrb= bullet.GetComponent<Rigidbody>();
+        newbulletrb.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
+        newbulletrb.linearVelocity = BulletDirection() * bulletSpeed; 
         Destroy(bullet, 5f);
         GetComponentInChildren<Animator>().SetTrigger("shoot");
 
