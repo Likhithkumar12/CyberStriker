@@ -6,7 +6,7 @@ public class Target : MonoBehaviour
 
     void Start()
     {
-        gameObject.layer = LayerMask.NameToLayer("obstacles");
+        gameObject.layer = LayerMask.NameToLayer("Obastacles");
 
     }
 

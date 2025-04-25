@@ -14,6 +14,7 @@ public class playeraim : MonoBehaviour
     [SerializeField] LineRenderer aimlaser;
     private bool isaimingprecisely = true;
     [Header("camera info ")]
+    
     [Space]
     private Vector2 aiminput;
     private RaycastHit lasthit;
@@ -33,7 +34,7 @@ public class playeraim : MonoBehaviour
         }
         updateaimposition();
         AimLaserPosition();
-      
+
 
     }
     private void AimLaserPosition()
@@ -48,10 +49,10 @@ public class playeraim : MonoBehaviour
         if (Physics.Raycast(gunPoint, direction, out RaycastHit hit, 25f))
         {
             endPoint = hit.point;
-            Debug.Log("Laser Hit Point: " + endPoint);
         }
 
         aimlaser.SetPosition(1, endPoint);
+        
     }
     private void updateaimposition()
     {
@@ -62,7 +63,7 @@ public class playeraim : MonoBehaviour
         }
     }
 
-    public bool isaimingprecise()
+    public bool Isaimingprecise()
     {
         if (isaimingprecisely)
         {
@@ -79,14 +80,22 @@ public class playeraim : MonoBehaviour
     public RaycastHit applyaim()
     {
         Ray ray = Camera.main.ScreenPointToRay(aiminput);
-        if (Physics.Raycast(ray, out var rayhit, Mathf.Infinity, layerMask))
+        RaycastHit rayhit;
+
+        if (Physics.Raycast(ray, out rayhit, Mathf.Infinity, layerMask))
         {
             lasthit = rayhit;
             return rayhit;
         }
-        return lasthit;
+        else
+        {
+            
+            rayhit.point = ray.origin + ray.direction * 100f;
+            rayhit.distance = 100f;
+            rayhit.normal = -ray.direction;
+            return rayhit;
+        }
     }
-  
 
 }
 

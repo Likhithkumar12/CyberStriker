@@ -15,7 +15,7 @@ public class weapnvisualcontroller : MonoBehaviour
     private bool rigshouldbeincreased;
     private bool lefthandshouldbeincreased;
     public  bool weponisbusy;
-    
+
     private void Start()
     {
         weponisbusy = false;
@@ -27,17 +27,18 @@ public class weapnvisualcontroller : MonoBehaviour
     private void Update()
     {
         applyinputswitch();
-        if (UnityEngine.Input.GetKeyDown(KeyCode.R) &&  weponisbusy==false)
-        {
-            anim.SetTrigger("reload");
-            pauserig();
+        adjusting_rig_and_left_hand();
 
-        }
+    }
+
+    private void adjusting_rig_and_left_hand()
+    {
         if (rigshouldbeincreased)
         {
             rig.weight += incresetime * Time.deltaTime;
             if (rig.weight >= 1)
             {
+                Debug.Log("inside rig");
                 rigshouldbeincreased = false;
             }
         }
@@ -46,10 +47,20 @@ public class weapnvisualcontroller : MonoBehaviour
             lefthandconstraint.weight += incresetimelefthand * Time.deltaTime;
             if (lefthandconstraint.weight >= 1)
             {
+                Debug.Log("inside lefthand");   
                 lefthandshouldbeincreased = false;
             }
         }
+    }
 
+    public  void playreloadanimations()
+    {
+        if(weponisbusy)
+        {
+            return;
+        }
+        anim.SetTrigger("reload");
+        pauserig();
     }
 
     private void pauserig()
