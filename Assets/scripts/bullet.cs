@@ -8,7 +8,7 @@ public class bullet : MonoBehaviour
 
         // GetComponent<Rigidbody>().constraints= RigidbodyConstraints.FreezeAll;
         playimpacteffect(collision);
-        Destroy(gameObject);
+        Objectpool.instance.returnbullet(gameObject);
     }
     private void playimpacteffect(Collision collision)
     {

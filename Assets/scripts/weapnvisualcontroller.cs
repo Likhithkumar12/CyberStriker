@@ -1,40 +1,60 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 public class weapnvisualcontroller : MonoBehaviour
 {
-    [SerializeField] Transform[] weapons;
+    [SerializeField] private weaponmodel[] weaponmodels;
+    [SerializeField] BackupWeaponModel[] backpackWeaponModels;
     [Header("Left Hand")]
     [SerializeField] TwoBoneIKConstraint lefthandconstraint;
     [SerializeField] private float incresetime = 0.25f;
     [SerializeField] private float incresetimelefthand = 0.25f;
     [SerializeField] Transform lefthand;
     private Animator anim;
-    private Transform currentgun;
     Rig rig;
     private bool rigshouldbeincreased;
     private bool lefthandshouldbeincreased;
-    public  bool weponisbusy;
+   
+    player player;
 
     private void Start()
     {
-        weponisbusy = false;
         anim = GetComponentInChildren<Animator>();
         rig = GetComponentInChildren<Rig>();
-        switchonguns(weapons[0]);
+        player = GetComponent<player>();
+        weaponmodels = GetComponentsInChildren<weaponmodel>(true);
+        backpackWeaponModels = GetComponentsInChildren<BackupWeaponModel>(true);
+
     }
 
     private void Update()
     {
-        applyinputswitch();
         adjusting_rig_and_left_hand();
 
+
+    }
+    public weaponmodel currentweaponmodel()
+    {
+        weaponmodel currentweaponmodel = null;
+        WeaponType weaponType = player.playerweaponcontroller.Currentweapon().weaponType;
+        for (int i = 0; i < weaponmodels.Length; i++)
+        {
+            if (weaponmodels[i].weaponType == weaponType)
+            {
+                currentweaponmodel = weaponmodels[i];
+
+            }
+
+        }
+        return currentweaponmodel;
     }
 
     private void adjusting_rig_and_left_hand()
     {
         if (rigshouldbeincreased)
         {
+            
             rig.weight += incresetime * Time.deltaTime;
             if (rig.weight >= 1)
             {
@@ -47,19 +67,19 @@ public class weapnvisualcontroller : MonoBehaviour
             lefthandconstraint.weight += incresetimelefthand * Time.deltaTime;
             if (lefthandconstraint.weight >= 1)
             {
-                Debug.Log("inside lefthand");   
+                Debug.Log("inside lefthand");
                 lefthandshouldbeincreased = false;
             }
         }
     }
 
-    public  void playreloadanimations()
+    public void playreloadanimations()
     {
-        if(weponisbusy)
-        {
-            return;
-        }
+        float reloadspeed = player.playerweaponcontroller.Currentweapon().Reloadspeed;
+        Debug.Log(reloadspeed);
+        anim.SetFloat("reloadspeed", reloadspeed);
         anim.SetTrigger("reload");
+        
         pauserig();
     }
 
@@ -68,77 +88,67 @@ public class weapnvisualcontroller : MonoBehaviour
         rig.weight = 0;
     }
 
-    private void weaponGrab(GrabType type)
+    public void weaponequipanimation()
     {
+        GrabType type = currentweaponmodel().grabType;
         pauserig();
         lefthandconstraint.weight = 0;
+        float Grabspeed= player.playerweaponcontroller.Currentweapon().Grabspeed;
         anim.SetFloat("weaponGrab", (float)type);
-        setweapobusy(true);
+        anim.SetFloat("grabspeed", Grabspeed);
         anim.SetTrigger("Grab");
-      
-        
+
+
     }
-    public  void setweapobusy(bool busy)
-    {
-        weponisbusy = busy;
-        anim.SetBool("weaponisbusy",weponisbusy);
-    }
+
     public void callriganimation() => rigshouldbeincreased = true;
     public void calllefthandanimation() => lefthandshouldbeincreased = true;
 
-    private void applyinputswitch()
-    {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            switchonguns(weapons[0]);
-            switchanimations(1);
-            weaponGrab(GrabType.sideGrab);
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            switchonguns(weapons[1]);
-            switchanimations(1);
-            weaponGrab(GrabType.sideGrab);
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            switchonguns(weapons[2]);
-            switchanimations(1);
-            weaponGrab(GrabType.BackGrab);
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            switchonguns(weapons[3]);
-            switchanimations(2);
-            weaponGrab(GrabType.BackGrab);
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            switchonguns(weapons[4]);
-            switchanimations(3);
-            weaponGrab(GrabType.BackGrab);
-        }
-    }
 
-    private void switchonguns(Transform gun)
+
+    public void switchoncurrent()
     {
-        switchoffguns();
-        gun.gameObject.SetActive(true);
-        currentgun = gun;
+        switchoffcurrent(); 
+        switchoffbackup();
+        if (player.playerweaponcontroller.onlyonebackup() == false)
+        {
+            switchonbackup();
+        }
+        switchanimations((int)currentweaponmodel().holdType);   
+        currentweaponmodel().gameObject.SetActive(true);
         attachlefthad();
     }
 
-    private void switchoffguns()
+    public void switchoffcurrent()
     {
-        for (int i = 0; i < weapons.Length; i++)
+        for (int i = 0; i < weaponmodels.Length; i++)
         {
-            weapons[i].gameObject.SetActive(false);
+            weaponmodels[i].gameObject.SetActive(false);
+        }
+
+    }
+    public void switchoffbackup()
+    {
+        for (int i = 0; i < backpackWeaponModels.Length; i++)
+        {
+            backpackWeaponModels[i].gameObject.SetActive(false);
+        }
+    }
+    public void switchonbackup()
+    {
+        WeaponType weaponType = player.playerweaponcontroller.Backupweapon().weaponType;
+        for (int i = 0; i < backpackWeaponModels.Length; i++)
+        {
+            if (backpackWeaponModels[i].weaponType == weaponType)
+            {
+                backpackWeaponModels[i].gameObject.SetActive(true);
+            }
         }
 
     }
     private void attachlefthad()
     {
-        Transform targettransform = currentgun.GetComponentInChildren<left_hand_target_transform>().transform;
+        Transform targettransform = currentweaponmodel().holdpoint;
         lefthand.localPosition = targettransform.localPosition;
         lefthand.localRotation = targettransform.localRotation;
     }
@@ -151,5 +161,5 @@ public class weapnvisualcontroller : MonoBehaviour
         anim.SetLayerWeight(layerindex, 1);
     }
 
-    public enum GrabType { sideGrab, BackGrab };
+
 }

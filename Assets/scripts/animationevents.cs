@@ -11,9 +11,9 @@ public class animationevents : MonoBehaviour
     }
     public void Reloadisover()
     {
-        Debug.Log("inside reload");
         weapnvisualcontroller.callriganimation();
         playerweaponcontroller.Currentweapon().fillbullets();
+        playerweaponcontroller.setweaponready(true);
 
     }
     public void rigisover()
@@ -23,6 +23,10 @@ public class animationevents : MonoBehaviour
     }
     public void weapongrabisover()
     {
-        weapnvisualcontroller.setweapobusy(false);
+        playerweaponcontroller.setweaponready(true);
+    }
+    public void switchonweaponmodels(){
+        Debug.Log("inside switchon");
+        weapnvisualcontroller.switchoncurrent();
     }
 }

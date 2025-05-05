@@ -10,6 +10,11 @@ public enum WeaponType
     Shotgun,
     SniperRifle,
 }
+public enum ShootType
+{
+    Single,
+    Multiple,
+}
 
 [System.Serializable]
 public class weapon
@@ -17,10 +22,26 @@ public class weapon
     public int inmagazineammo;
     public int reservedammo;
     public int magazinesize;
+    public float firerate;
+    private float lastfiretime;
     public WeaponType weaponType;
+    public ShootType shootType;
+    public float Reloadspeed = 1;
+    [Range(1, 2)]
+    public float Grabspeed=1;
     public bool canshoot()
     {
         return isenoughammo();
+    }
+    public bool checkfirerate()
+    {
+        if(Time.time>lastfiretime+1/firerate)
+        {
+            lastfiretime = Time.time;
+            return true;
+        }
+        return false;
+
     }
     public bool isenoughammo()
     {

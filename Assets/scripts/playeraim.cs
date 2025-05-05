@@ -39,6 +39,14 @@ public class playeraim : MonoBehaviour
     }
     private void AimLaserPosition()
     {
+        aimlaser.enabled = playerweaponcontroller.Weaponready();
+        if(aimlaser.enabled == false)
+        {
+            return;
+        }
+        weaponmodel weaponmodel=playerr.weapnvisualcontroller.currentweaponmodel();
+        weaponmodel.transform.LookAt(AimTarget.position);
+        weaponmodel.gunpoint.LookAt(AimTarget.position);
         Vector3 gunPoint = playerweaponcontroller.returngunpoint();
         Vector3 direction = playerweaponcontroller.BulletDirection();
 
