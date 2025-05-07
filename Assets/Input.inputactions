@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "slot3",
+                    "type": "Button",
+                    "id": "e40b1fff-31a4-4867-95bd-57622029b4f7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "dropgun",
                     "type": "Button",
                     "id": "5a0cc753-c955-48dd-a4ed-43cfe784c0c5",
@@ -186,6 +195,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "slot2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e87e6e5-d297-4343-b88d-eebbf452b790",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "slot3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

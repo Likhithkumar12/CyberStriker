@@ -146,6 +146,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""slot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""e40b1fff-31a4-4867-95bd-57622029b4f7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""dropgun"",
                     ""type"": ""Button"",
                     ""id"": ""5a0cc753-c955-48dd-a4ed-43cfe784c0c5"",
@@ -277,6 +286,17 @@ public partial class @Input: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1e87e6e5-d297-4343-b88d-eebbf452b790"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""slot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5ac8fb5b-2001-4bc7-b104-ba573942e462"",
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
@@ -310,6 +330,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Character_run = m_Character.FindAction("run", throwIfNotFound: true);
         m_Character_slot1 = m_Character.FindAction("slot1", throwIfNotFound: true);
         m_Character_slot2 = m_Character.FindAction("slot2", throwIfNotFound: true);
+        m_Character_slot3 = m_Character.FindAction("slot3", throwIfNotFound: true);
         m_Character_dropgun = m_Character.FindAction("dropgun", throwIfNotFound: true);
         m_Character_reload = m_Character.FindAction("reload", throwIfNotFound: true);
     }
@@ -398,6 +419,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_run;
     private readonly InputAction m_Character_slot1;
     private readonly InputAction m_Character_slot2;
+    private readonly InputAction m_Character_slot3;
     private readonly InputAction m_Character_dropgun;
     private readonly InputAction m_Character_reload;
     /// <summary>
@@ -435,6 +457,10 @@ public partial class @Input: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Character/slot2".
         /// </summary>
         public InputAction @slot2 => m_Wrapper.m_Character_slot2;
+        /// <summary>
+        /// Provides access to the underlying input action "Character/slot3".
+        /// </summary>
+        public InputAction @slot3 => m_Wrapper.m_Character_slot3;
         /// <summary>
         /// Provides access to the underlying input action "Character/dropgun".
         /// </summary>
@@ -487,6 +513,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @slot2.started += instance.OnSlot2;
             @slot2.performed += instance.OnSlot2;
             @slot2.canceled += instance.OnSlot2;
+            @slot3.started += instance.OnSlot3;
+            @slot3.performed += instance.OnSlot3;
+            @slot3.canceled += instance.OnSlot3;
             @dropgun.started += instance.OnDropgun;
             @dropgun.performed += instance.OnDropgun;
             @dropgun.canceled += instance.OnDropgun;
@@ -522,6 +551,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @slot2.started -= instance.OnSlot2;
             @slot2.performed -= instance.OnSlot2;
             @slot2.canceled -= instance.OnSlot2;
+            @slot3.started -= instance.OnSlot3;
+            @slot3.performed -= instance.OnSlot3;
+            @slot3.canceled -= instance.OnSlot3;
             @dropgun.started -= instance.OnDropgun;
             @dropgun.performed -= instance.OnDropgun;
             @dropgun.canceled -= instance.OnDropgun;
@@ -610,6 +642,13 @@ public partial class @Input: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSlot2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "slot3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSlot3(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "dropgun" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

@@ -131,19 +131,42 @@ public class weapnvisualcontroller : MonoBehaviour
     {
         for (int i = 0; i < backpackWeaponModels.Length; i++)
         {
-            backpackWeaponModels[i].gameObject.SetActive(false);
+           backpackWeaponModels[i].Activate(false);
         }
     }
     public void switchonbackup()
     {
-        WeaponType weaponType = player.playerweaponcontroller.Backupweapon().weaponType;
+        switchoffbackup();
+        BackupWeaponModel lowbackhung = null;
+        BackupWeaponModel backhang = null;
+        BackupWeaponModel sidehang = null;
+
         for (int i = 0; i < backpackWeaponModels.Length; i++)
         {
-            if (backpackWeaponModels[i].weaponType == weaponType)
+            if(backpackWeaponModels[i].weaponType == player.playerweaponcontroller.Currentweapon().weaponType)
             {
-                backpackWeaponModels[i].gameObject.SetActive(true);
+                continue;
             }
+            if (player.playerweaponcontroller.hasbackupininventory(backpackWeaponModels[i].weaponType))
+            {
+                if (backpackWeaponModels[i].HangTypeIs(HangType.LowBackHang))
+                {
+                    lowbackhung = backpackWeaponModels[i];
+                }
+                if (backpackWeaponModels[i].HangTypeIs(HangType.BackHang))
+                {
+                    backhang = backpackWeaponModels[i];
+                }
+                if (backpackWeaponModels[i].HangTypeIs(HangType.SideHang))
+                {
+                    sidehang = backpackWeaponModels[i];
+                }
+            }
+
         }
+        lowbackhung?.Activate(true);
+        backhang?.Activate(true);
+        sidehang?.Activate(true);
 
     }
     private void attachlefthad()

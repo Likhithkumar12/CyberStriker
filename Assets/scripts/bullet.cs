@@ -5,19 +5,19 @@ public class bullet : MonoBehaviour
     [SerializeField] GameObject impactEffect;
     private void OnCollisionEnter(Collision collision)
     {
-
-        // GetComponent<Rigidbody>().constraints= RigidbodyConstraints.FreezeAll;
         playimpacteffect(collision);
-        Objectpool.instance.returnbullet(gameObject);
+       Objectpool.instance.returnobject(0.1f, gameObject);
+        
     }
     private void playimpacteffect(Collision collision)
     {
         if (collision.contacts.Length > 0)
         {
             ContactPoint contact = collision.contacts[0];
-           GameObject impact = Instantiate(impactEffect, contact.point, Quaternion.LookRotation(contact.normal));
-            Destroy(impact, .5f);
+            GameObject impact = Objectpool.instance.getObject(impactEffect);
+            impact.transform.position = contact.point;
+            Objectpool.instance.returnobject(1f, impact);
         }
-       
+
     }
 }
