@@ -7,6 +7,7 @@ public class playerweaponcontroller : MonoBehaviour
 {
     player player;
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] WeaponData weaponData; 
 
     [SerializeField] Transform Weaponholder;
     [SerializeField] Transform Aimm;
@@ -29,25 +30,22 @@ public class playerweaponcontroller : MonoBehaviour
     }
     void Update()
     {
-        if (isshooting && hasFiredBurst && Weaponready())
+        if (isshooting)
         {
             Shoot();
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.T))
-        {
-            currentweapon.toggleburstfire();
-
         }
 
     }
     public void startweapon()
     {
+        weaponlist[0] = new weapon(weaponData);
         switchgun(0);
     }
     public bool Weaponready() => weaponready;
     public void setweaponready(bool value)
     {
         weaponready = value;
+        
     }
     public weapon Currentweapon() => currentweapon;
 
@@ -68,28 +66,12 @@ public class playerweaponcontroller : MonoBehaviour
         Input inputactions = player.inputactions;
         inputactions.Character.Fire.performed += Context =>
         {
-            if (!Weaponready()) return;
-
-            if (currentweapon.isActive && currentweapon.canshoot())
-            {
-                if (hasFiredBurst)
-                {
-                    hasFiredBurst = false;
-                    StartCoroutine(BurstFire());
-                }
-            }
-            else
-            {
-                isshooting = true;
-                Shoot();
-            }
+            isshooting = true;
         };
         inputactions.Character.Fire.canceled += Context =>
-    {
-        isshooting = false;
-        hasFiredBurst = true;
-
-    };
+{
+    isshooting = false;
+};
 
         inputactions.Character.slot1.performed += Context => switchgun(0);
         inputactions.Character.slot2.performed += Context => switchgun(1);
@@ -135,42 +117,48 @@ public class playerweaponcontroller : MonoBehaviour
         }
         return false;
     }
-    public void pickupweapon(weapon weapon)
+    public void pickupweapon(WeaponData weaponData)
     {
         if (weaponlist.Count >= 2)
         {
             return;
         }
-        weaponlist.Add(weapon);
+        weaponlist.Add(new weapon(weaponData));
         player.weapnvisualcontroller.switchonbackup();
 
-    }
-    private IEnumerator BurstFire()
-    {
-        setweaponready(false);
-
-        for (int i = 1; i <= currentweapon.bulletsperburst; i++)
-        {
-            FireSingleBullet();
-            yield return new WaitForSeconds(currentweapon.burstdelay);
-        }
-
-        hasFiredBurst = true;
-        setweaponready(true);
     }
 
     private void Shoot()
     {
-        if (!Weaponready()) return;
-        if (!currentweapon.canshoot()) return;
+        if (!Weaponready())
+        {
+            return;
+        }
+        if (currentweapon.weaponType == WeaponType.Shotgun)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Invoke(nameof(FireSingleBullet), 0);
+            }
+            isshooting = false;
+            return;
+            
+        }
+
+        if (!currentweapon.canshoot())
+            {
+
+                return;
+            }
 
         GetComponentInChildren<Animator>().SetTrigger("shoot");
-
         if (currentweapon.shootType == ShootType.Single)
         {
             isshooting = false;
         }
         FireSingleBullet();
+
+        
     }
 
 

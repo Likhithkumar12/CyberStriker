@@ -164,6 +164,15 @@ public partial class @Input: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""pickup"",
+                    ""type"": ""Button"",
+                    ""id"": ""db0104ff-1910-46f0-8900-f32db55c4328"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""reload"",
                     ""type"": ""Button"",
                     ""id"": ""074f4c90-28a5-4942-a7fa-7e1ef471700d"",
@@ -308,6 +317,17 @@ public partial class @Input: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e564101e-85e8-47f0-b4ee-da4763292795"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""pickup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8cae65fc-6262-45a2-a5d2-f752bbf414df"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -332,6 +352,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
         m_Character_slot2 = m_Character.FindAction("slot2", throwIfNotFound: true);
         m_Character_slot3 = m_Character.FindAction("slot3", throwIfNotFound: true);
         m_Character_dropgun = m_Character.FindAction("dropgun", throwIfNotFound: true);
+        m_Character_pickup = m_Character.FindAction("pickup", throwIfNotFound: true);
         m_Character_reload = m_Character.FindAction("reload", throwIfNotFound: true);
     }
 
@@ -421,6 +442,7 @@ public partial class @Input: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_slot2;
     private readonly InputAction m_Character_slot3;
     private readonly InputAction m_Character_dropgun;
+    private readonly InputAction m_Character_pickup;
     private readonly InputAction m_Character_reload;
     /// <summary>
     /// Provides access to input actions defined in input action map "Character".
@@ -465,6 +487,10 @@ public partial class @Input: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Character/dropgun".
         /// </summary>
         public InputAction @dropgun => m_Wrapper.m_Character_dropgun;
+        /// <summary>
+        /// Provides access to the underlying input action "Character/pickup".
+        /// </summary>
+        public InputAction @pickup => m_Wrapper.m_Character_pickup;
         /// <summary>
         /// Provides access to the underlying input action "Character/reload".
         /// </summary>
@@ -519,6 +545,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @dropgun.started += instance.OnDropgun;
             @dropgun.performed += instance.OnDropgun;
             @dropgun.canceled += instance.OnDropgun;
+            @pickup.started += instance.OnPickup;
+            @pickup.performed += instance.OnPickup;
+            @pickup.canceled += instance.OnPickup;
             @reload.started += instance.OnReload;
             @reload.performed += instance.OnReload;
             @reload.canceled += instance.OnReload;
@@ -557,6 +586,9 @@ public partial class @Input: IInputActionCollection2, IDisposable
             @dropgun.started -= instance.OnDropgun;
             @dropgun.performed -= instance.OnDropgun;
             @dropgun.canceled -= instance.OnDropgun;
+            @pickup.started -= instance.OnPickup;
+            @pickup.performed -= instance.OnPickup;
+            @pickup.canceled -= instance.OnPickup;
             @reload.started -= instance.OnReload;
             @reload.performed -= instance.OnReload;
             @reload.canceled -= instance.OnReload;
@@ -656,6 +688,13 @@ public partial class @Input: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDropgun(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "pickup" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPickup(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "reload" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

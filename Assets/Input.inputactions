@@ -78,6 +78,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "pickup",
+                    "type": "Button",
+                    "id": "db0104ff-1910-46f0-8900-f32db55c4328",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "reload",
                     "type": "Button",
                     "id": "074f4c90-28a5-4942-a7fa-7e1ef471700d",
@@ -217,6 +226,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "dropgun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e564101e-85e8-47f0-b4ee-da4763292795",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "pickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

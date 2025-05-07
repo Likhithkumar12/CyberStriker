@@ -1,6 +1,5 @@
 
 using UnityEngine;
-
 public enum WeaponType
 {
     Pistol,
@@ -23,61 +22,40 @@ public class weapon
     public int bulletspercount ;
     public int reservedammo;
     public int magazinesize;
-    [Header("Burst Fire")]
-    public bool burstavailable;
-    public bool isActive;
-    public int bulletsperburst = 3;
-    public float burstfirerate = 1;
-    public float burstdelay = 0.1f;
     [Header("firerate")]
-    public float defaltfirerate;
-    public float firerate;
-    private float lastfiretime;
+    public  float firerate;
+    private float lastfiretime=0;
     [Header("Types")]
     public WeaponType weaponType;
     public ShootType shootType;
     [Header("Speeds")]
-    public float Reloadspeed = 1;
+    public float Reloadspeed { get; private set; } = 1;
     [Range(1, 2)]
-    public float Grabspeed=1;
+    public float Grabspeed { get; private set; } = 1;
     [Header("Spread")]
     private  float currentspread ;
-    public float maxspread;
-    public float basespread;
+    private float maxspread;
+    private float basespread;
     private float spreadincrease = 0.1f;
     private float lastspreadtime;
     private float spreadcooldown = 1;
 
-
-    public bool ISAvailable()
+    public weapon(WeaponData weaponData)
     {
-        if (weaponType == WeaponType.Shotgun)
-        {
-            burstdelay = 0;
-            return isActive && canshoot();
-        }
-        return isActive && canshoot();
-    }
-    public void toggleburstfire()
-    {
-        if (burstavailable == false)
-        {
-            return;
-        }
-        isActive = !isActive;
-        if (isActive)
-        {
-            bulletspercount = bulletsperburst;
-            firerate = burstfirerate;
-        }
-        else
-        {
-            bulletspercount = 1;
-            firerate = defaltfirerate;
-        }
-         
-    }
+        this.firerate = weaponData.firerate;
+        this.weaponType = weaponData.weaponType;
+        this.shootType = weaponData.shootType;
+        this.maxspread = weaponData.maxspread;
+        this.basespread = weaponData.basespread;
+        this.spreadincrease = weaponData.spreadincrease;
+        this.Reloadspeed = weaponData.Reloadspeed;
+        this.Grabspeed = weaponData.Grabspeed;
+        this.reservedammo = weaponData.reservedammo;
+        this.inmagazineammo = weaponData.inmagazineammo;
+        this.magazinesize = weaponData.magazinesize;
+        this.bulletspercount = weaponData.bulletspercount;
 
+    }
 
     public Vector3 ApplySpread(Vector3 direction)
     {
@@ -103,11 +81,18 @@ public class weapon
         lastspreadtime=Time.time;
 
     }
-    public bool canshoot()=> checkfirerate() && isenoughammo();
+    public bool canshoot()
+    {
+        if (checkfirerate() && isenoughammo())
+        {
+            return true;
+        }
+        return false;
+    }
         
     public bool checkfirerate()
     {
-        if(Time.time>lastfiretime+1/firerate)
+        if (Time.time > lastfiretime + 1 / firerate)
         {
             lastfiretime = Time.time;
             return true;
@@ -117,6 +102,7 @@ public class weapon
     }
     public bool isenoughammo()
     {
+
         if (inmagazineammo > 0)
         {
             return true;

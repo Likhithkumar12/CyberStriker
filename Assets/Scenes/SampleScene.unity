@@ -2502,6 +2502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 5057529865139294819, guid: 7b76505f7bd6f4f9fbe1c950e594b084, type: 3}
+  weaponData: {fileID: 11400000, guid: e9a458fc56d6649fbadb6ab8dace355f, type: 2}
   Weaponholder: {fileID: 599179591}
   Aimm: {fileID: 727483438}
   bulletSpeed: 25
@@ -2510,71 +2511,31 @@ MonoBehaviour:
     bulletspercount: 0
     reservedammo: 0
     magazinesize: 0
-    burstavailable: 0
     isActive: 0
-    bulletsperburst: 3
-    burstfirerate: 1
-    burstdelay: 0.1
-    defaltfirerate: 0
-    firerate: 0
     weaponType: 0
     shootType: 0
-    Reloadspeed: 0
-    Grabspeed: 1
-    maxspread: 15
-    basespread: 15
   weaponlist:
   - inmagazineammo: 0
     bulletspercount: 1
     reservedammo: 999999
     magazinesize: 50
-    burstavailable: 1
     isActive: 0
-    bulletsperburst: 3
-    burstfirerate: 1
-    burstdelay: 0.2
-    defaltfirerate: 4
-    firerate: 1
     weaponType: 2
     shootType: 1
-    Reloadspeed: 0
-    Grabspeed: 1
-    maxspread: 3
-    basespread: 1
   - inmagazineammo: 0
     bulletspercount: 0
     reservedammo: 9999
     magazinesize: 10
-    burstavailable: 0
     isActive: 0
-    bulletsperburst: 5
-    burstfirerate: 1
-    burstdelay: 0.1
-    defaltfirerate: 1
-    firerate: 1
     weaponType: 0
     shootType: 0
-    Reloadspeed: 0
-    Grabspeed: 1
-    maxspread: 1
-    basespread: 1
   - inmagazineammo: 0
     bulletspercount: 0
     reservedammo: 9999
     magazinesize: 10
-    burstavailable: 0
     isActive: 0
-    bulletsperburst: 5
-    burstfirerate: 1
-    burstdelay: 0.1
-    defaltfirerate: 1
-    firerate: 1
     weaponType: 3
     shootType: 0
-    Reloadspeed: 0
-    Grabspeed: 1
-    maxspread: 15
-    basespread: 15
 --- !u!4 &1214191502 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 775744522900846208, guid: bd9155f524042e949b1de52d539d950e, type: 3}
@@ -2947,19 +2908,9 @@ MonoBehaviour:
     bulletspercount: 0
     reservedammo: 0
     magazinesize: 0
-    burstavailable: 0
     isActive: 0
-    bulletsperburst: 3
-    burstfirerate: 1
-    burstdelay: 0.1
-    defaltfirerate: 0
-    firerate: 0
     weaponType: 2
     shootType: 0
-    Reloadspeed: 0
-    Grabspeed: 0
-    maxspread: 3
-    basespread: 1
 --- !u!4 &1314589013
 Transform:
   m_ObjectHideFlags: 0
